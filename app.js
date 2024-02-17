@@ -4,13 +4,16 @@
 let paragrafo = document.querySelector('p');
 paragrafo.innerHTML = 'Escolha o número entre 1 e 10';
 */
-
+let listaDeNumerosSorteados = [];
+let numeroLimite = 10;
 let numeroAleatorio = 2;
 let tentativas = 1;
 
 function exibirNomeNaTela (tag, texto){
     let campo = document.querySelector(tag);
     campo.innerHTML = texto;
+    responsiveVoice.speak(texto, 'Brazilian Portuguese Female', {rate:1.2});
+
 }
 
 function exibriMensagemInicial(){
@@ -37,7 +40,19 @@ function verificarChute() {
 }
 
 function gerarNumeroAleatorio() {
-  return parseInt(Math.random() * 10 +1);
+    let numeroEscolhido =  parseInt(Math.random() * numeroLimite + 1);
+    let quantidadeDeElementoNaLista = listaDeNumerosSorteados.length;
+
+  if(quantidadeDeElementoNaLista == 3){
+    listaDeNumerosSorteados = [];
+  }
+    if(listaDeNumerosSorteados.includes(numeroEscolhido)){
+      return gerarNumeroAleatorio();
+    }else{
+      listaDeNumerosSorteados.push(numeroEscolhido);
+      console.log(listaDeNumerosSorteados);
+      return numeroEscolhido;
+    }
 }
 
 function limparCampo(){
@@ -50,5 +65,5 @@ function reinicarJogo(){
   limparCampo();
   tentativas = 1;
   exibriMensagemInicial();
-  document.getElementById('reiniciar').setAttribute('disabled', true)
+  document.getElementById('reiniciar').setAttribute('disabled', true);
 }
